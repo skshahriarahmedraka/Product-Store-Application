@@ -1,0 +1,24 @@
+version: "3.8"
+
+
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: product_store_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: userdb 
+    volumes:
+      - /docker/productstoredata:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - product_store_network
+
+
+
+networks:
+  product_store_network:
+    driver: bridge

@@ -60,7 +60,7 @@ func MongodbConnection() *mongo.Database {
 
 		logger.Error().Msg("❌🔥 Error message :" + err.Error())
 	}
-	db := client.Database("userdb")
+	db := client.Database(os.Getenv("MONGO_DB"))
 	if err == nil {
 		logger.Info().Msg("📢 Info message : ⚡😍 sucessfully connected to database")
 	}

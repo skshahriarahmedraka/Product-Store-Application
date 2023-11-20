@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-var Validate = validator.New()
+
 
 func (H *DatabaseCollections) Register() gin.HandlerFunc {
 	return func(c *gin.Context) {

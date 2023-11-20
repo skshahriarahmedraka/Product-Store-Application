@@ -27,11 +27,11 @@ func Routes(r *gin.Engine) {
 	// r.DELETE("/brand/:id", DeleteBrand())
 	// r.GET("/brands", GetAllBrands())
 
-	// r.POST("/category", CreateCategory())
-	// r.GET("/category/:id", GetCategory())
-	// r.PUT("/category/:id", UpdateCategory())
-	// r.DELETE("/category/:id", DeleteCategory())
-	// r.GET("/categories", GetAllCategories())
+	r.POST("/category", handler.CreateCategory())
+	r.GET("/category/:id", handler.GetCategory())
+	r.PUT("/category/:id", handler.UpdateCategory())
+	r.DELETE("/category/:id", handler.DeleteCategory())
+	r.GET("/category", handler.GetAllCategories())
 	
 	// r.POST("/supplier", CreateSupplier())
 	// r.GET("/supplier/:id", GetSupplier())

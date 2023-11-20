@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/skshahriarahmedraka/Product-Store-Application/config"
+	mongodatabase "github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
 	// "github.com/skshahriarahmedraka/Authentication-Service-Using-Golang/init"
 	"github.com/skshahriarahmedraka/Product-Store-Application/routes"
 
@@ -76,8 +77,8 @@ func main() {
 func run(args []string, stdout io.Writer) error {
 	config.LoadEnvVars()
 	config.LoadAdmin()
+	mongodatabase.DatabaseInitialization()
 	
-
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Logger())

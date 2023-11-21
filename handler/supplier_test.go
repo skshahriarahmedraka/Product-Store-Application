@@ -1,11 +1,9 @@
-package handler_test
+package handler
 
 import (
+	"github.com/gin-gonic/gin"
 	"reflect"
 	"testing"
-
-	"github.com/gin-gonic/gin"
-	"github.com/skshahriarahmedraka/Product-Store-Application/handler"
 )
 
 func TestCreateSupplier(t *testing.T) {
@@ -17,7 +15,7 @@ func TestCreateSupplier(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := handler.CreateSupplier(); !reflect.DeepEqual(got, tt.want) {
+			if got := CreateSupplier(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("CreateSupplier() = %v, want %v", got, tt.want)
 			}
 		})
@@ -33,7 +31,7 @@ func TestDeleteSupplier(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := handler.DeleteSupplier(); !reflect.DeepEqual(got, tt.want) {
+			if got := DeleteSupplier(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("DeleteSupplier() = %v, want %v", got, tt.want)
 			}
 		})
@@ -49,7 +47,7 @@ func TestGetAllSuppliers(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := handler.GetAllSuppliers(); !reflect.DeepEqual(got, tt.want) {
+			if got := GetAllSuppliers(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetAllSuppliers() = %v, want %v", got, tt.want)
 			}
 		})
@@ -65,7 +63,7 @@ func TestGetSupplier(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := handler.GetSupplier(); !reflect.DeepEqual(got, tt.want) {
+			if got := GetSupplier(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetSupplier() = %v, want %v", got, tt.want)
 			}
 		})
@@ -81,7 +79,7 @@ func TestUpdateSupplier(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := handler.UpdateSupplier(); !reflect.DeepEqual(got, tt.want) {
+			if got := UpdateSupplier(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("UpdateSupplier() = %v, want %v", got, tt.want)
 			}
 		})

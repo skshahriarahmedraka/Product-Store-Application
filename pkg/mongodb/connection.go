@@ -3,14 +3,12 @@ package mongodatabase
 import (
 	"context"
 	"fmt"
-	"runtime/debug"
-	"time"
-
-	"os"
-
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"os"
+	"runtime/debug"
+	"time"
 )
 
 var buildInfo *debug.BuildInfo
@@ -44,10 +42,8 @@ func MongodbConnection() *mongo.Database {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 
-	// Context to set timeout.
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	// Create a new client and connect to the server
 	client, err := mongo.Connect(ctx, opts)
 	fmt.Println("🚀 ~ file: connection.go ~ line 51 ~ funcMongodbConnection ~ err : ", err)
 

@@ -3,11 +3,10 @@ package handler
 import (
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	// "go.mongodb.org/mongo-driver/bson/primitive"
+
 )
 
 

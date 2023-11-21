@@ -2,12 +2,11 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"net/http"
+	"time"
 )
 
 func CreateSupplier() gin.HandlerFunc {

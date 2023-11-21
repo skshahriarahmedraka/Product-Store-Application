@@ -1,13 +1,11 @@
 package handler
 
 import (
+	"github.com/go-playground/validator/v10"
+	"github.com/rs/zerolog"
 	"os"
 	"runtime/debug"
 	"time"
-
-	"github.com/go-playground/validator/v10"
-	"github.com/rs/zerolog"
-	
 )
 
 var buildInfo *debug.BuildInfo

@@ -2,8 +2,11 @@ package main
 
 import (
 	"context"
-	// "errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/skshahriarahmedraka/Product-Store-Application/config"
+	"github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
+	"github.com/skshahriarahmedraka/Product-Store-Application/routes"
 	"io"
 	"log"
 	"net/http"
@@ -11,13 +14,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/skshahriarahmedraka/Product-Store-Application/config"
-	mongodatabase "github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
-	// "github.com/skshahriarahmedraka/Authentication-Service-Using-Golang/init"
-	"github.com/skshahriarahmedraka/Product-Store-Application/routes"
-
-	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -45,27 +41,6 @@ const (
 
 // @externalDocs.description	OpenAPI
 // @externalDocs.url			https://swagger.io/resources/open-api/
-// func main() {
-// 	//  SET MODE TO RELEASE
-// 	gin.SetMode(gin.ReleaseMode)
-
-
-// 	fmt.Println("🚀✨ Api is started ...")
-
-// 	r := gin.New()
-
-
-// 	r.Use(gin.Logger())
-
-// 	routes.Routes(r)
-
-// 	log.Println("Server is started in PORT ",os.Getenv("HOST_ADDR")," ...👨‍💻 ")
-// 	if e := r.Run(os.Getenv("HOST_ADDR")); e != nil {
-// 		log.Fatalln("❌ ERROR when Server is start   👨‍💻 : ", e)
-// 	}
-
-// }
-
 
 func main() {
 	if err := run(os.Args, os.Stdout); err != nil {
@@ -78,7 +53,7 @@ func run(args []string, stdout io.Writer) error {
 	config.LoadEnvVars()
 	config.LoadAdmin()
 	mongodatabase.DatabaseInitialization()
-	
+
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Logger())
@@ -110,6 +85,6 @@ func run(args []string, stdout io.Writer) error {
 		log.Fatalf("HTTP shutdown error: %v", err)
 	}
 	log.Println("Graceful shutdown complete.")
-	
+
 	return nil
 }

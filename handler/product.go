@@ -2,19 +2,16 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
-	// "time"
-
 	"github.com/gin-gonic/gin"
-	mongodatabase "github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
+	"github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"net/http"
 )
 
+func CreateProduct() gin.HandlerFunc {
+	return func(c *gin.Context) {
 
-func CreateProduct() gin.HandlerFunc{
-	return func(c *gin.Context){
-
-		var reqProduct mongodatabase.Products 
+		var reqProduct mongodatabase.Products
 		err := c.BindJSON(&reqProduct)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
@@ -22,12 +19,9 @@ func CreateProduct() gin.HandlerFunc{
 			return
 		}
 		fmt.Println("🚀", reqProduct)
+		reqProduct.Id = primitive.NewObjectID()
+		count, err := mongodatabase.CountBrandById(reqProduct.Brand_id)
 
-		reqProduct.Id =primitive.NewObjectID()
-		// reqProduct.Created_at =time.Now().UTC()
-		count,err := mongodatabase.CountBrandById(reqProduct.Brand_id)
-
-		
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -39,9 +33,8 @@ func CreateProduct() gin.HandlerFunc{
 			return
 		}
 
-		count,err = mongodatabase.CountCategoryById(reqProduct.Catagory_id)
+		count, err = mongodatabase.CountCategoryById(reqProduct.Catagory_id)
 
-		
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -53,10 +46,8 @@ func CreateProduct() gin.HandlerFunc{
 			return
 		}
 
+		count, err = mongodatabase.CountSupplierById(reqProduct.Supplier_id)
 
-		count,err = mongodatabase.CountSupplierById(reqProduct.Supplier_id)
-
-	
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -68,10 +59,8 @@ func CreateProduct() gin.HandlerFunc{
 			return
 		}
 
+		count, err = mongodatabase.DublicateBySupplier(reqProduct.Name, reqProduct.Supplier_id)
 
-		count,err = mongodatabase.DublicateBySupplier(reqProduct.Name, reqProduct.Supplier_id)
-
-		
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -83,31 +72,29 @@ func CreateProduct() gin.HandlerFunc{
 			return
 		}
 
-		res,err:=mongodatabase.AddProductInStock(reqProduct.Id)
-		_=res
+		res, err := mongodatabase.AddProductInStock(reqProduct.Id)
+		_ = res
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-
-		res,err =mongodatabase.InsertProduct(reqProduct)
+		res, err = mongodatabase.InsertProduct(reqProduct)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		_ = res
-        fmt.Println("🚀 ~ file: category.go ~ line 46 ~ returnfunc ~ res : ", res)
+		fmt.Println("🚀 ~ file: category.go ~ line 46 ~ returnfunc ~ res : ", res)
 		c.JSON(http.StatusAccepted, res)
 	}
 }
 
-
-func GetAllProducts() gin.HandlerFunc{
-	return func(c *gin.Context){
-		product,err := mongodatabase.GetAllProduct()
+func GetAllProducts() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		product, err := mongodatabase.GetAllProduct()
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -116,23 +103,23 @@ func GetAllProducts() gin.HandlerFunc{
 		c.JSON(http.StatusOK, product)
 	}
 }
-func GetProduct() gin.HandlerFunc{
-	
-	return func(c *gin.Context){
+func GetProduct() gin.HandlerFunc {
+
+	return func(c *gin.Context) {
 		objectID, _ := primitive.ObjectIDFromHex(c.Param("id"))
-		product,err := mongodatabase.GetProduct(objectID)
+		product, err := mongodatabase.GetProduct(objectID)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK,product)
+		c.JSON(http.StatusOK, product)
 	}
 }
 
-func UpdateProduct() gin.HandlerFunc{
-	return func(c *gin.Context){
-		var reqProduct mongodatabase.Products 
+func UpdateProduct() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var reqProduct mongodatabase.Products
 		objectID, _ := primitive.ObjectIDFromHex(c.Param("id"))
 		err := c.BindJSON(&reqProduct)
 		if err != nil {
@@ -140,29 +127,27 @@ func UpdateProduct() gin.HandlerFunc{
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		// reqBrand.Created_at =time.Now().UTC()
 
-		product,err := mongodatabase.UpdateProduct(objectID,reqProduct)
+		product, err := mongodatabase.UpdateProduct(objectID, reqProduct)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK,product)
+		c.JSON(http.StatusOK, product)
 	}
 }
 
-
 func DeleteProduct() gin.HandlerFunc {
-	return func(c *gin.Context){
-		
+	return func(c *gin.Context) {
+
 		objectID, _ := primitive.ObjectIDFromHex(c.Param("id"))
-		res,err := mongodatabase.DeleteProduct(objectID)
+		res, err := mongodatabase.DeleteProduct(objectID)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK,res)
+		c.JSON(http.StatusOK, res)
 	}
 }

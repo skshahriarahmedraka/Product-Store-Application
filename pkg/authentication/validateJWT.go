@@ -3,7 +3,7 @@ package authentication
 import (
 	"os"
 	"github.com/golang-jwt/jwt/v4"
-	// "github.com/skshahriarahmedraka/Product-Store-Application/models"
+
 )
 
 func ValidateJWT(s string) (claims *TokenClaims, msg string) {

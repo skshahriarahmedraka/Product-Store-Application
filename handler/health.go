@@ -2,11 +2,8 @@ package handler
 
 import "github.com/gin-gonic/gin"
 
-
-
-
 func HandlerHealth() gin.HandlerFunc {
-	return func(c *gin.Context){
+	return func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": 200, "is_alive": true})
 	}
 }

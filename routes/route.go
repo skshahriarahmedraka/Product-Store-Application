@@ -21,11 +21,11 @@ func Routes(r *gin.Engine) {
 	// // r.GET("/:id", H.UserData())
 	// // r.GET("/alluser", H.AllUserData())
 
-	// r.POST("/brand", CreateBrand())
-	// r.GET("/brand/:id", GetBrand())
-	// r.PUT("/brand/:id", UpdateBrand())
-	// r.DELETE("/brand/:id", DeleteBrand())
-	// r.GET("/brands", GetAllBrands())
+	r.POST("/brand", handler.CreateBrand())
+	r.GET("/brand/:id", handler.GetBrand())
+	r.PUT("/brand/:id", handler.UpdateBrand())
+	r.DELETE("/brand/:id", handler.DeleteBrand())
+	r.GET("/brands", handler.GetAllBrands())
 
 	r.POST("/category", handler.CreateCategory())
 	r.GET("/category/:id", handler.GetCategory())
@@ -33,23 +33,32 @@ func Routes(r *gin.Engine) {
 	r.DELETE("/category/:id", handler.DeleteCategory())
 	r.GET("/category", handler.GetAllCategories())
 	
-	// r.POST("/supplier", CreateSupplier())
-	// r.GET("/supplier/:id", GetSupplier())
-	// r.PUT("/supplier/:id", UpdateSupplier())
-	// r.DELETE("/supplier/:id", DeleteSupplier())
-	// r.GET("/suppliers", GetAllSuppliers())
+	// not tested 
+	r.POST("/supplier", handler.CreateSupplier())
+	r.GET("/supplier/:id", handler.GetSupplier())
+	r.PUT("/supplier/:id", handler.UpdateSupplier())
+	r.DELETE("/supplier/:id", handler.DeleteSupplier())
+	r.GET("/suppliers", handler.GetAllSuppliers())
 
 
 
-	// r.POST("/product", CreateProduct())
-	// r.GET("/product/:id", GetProduct())
-	// r.PUT("/product/:id", UpdateProduct())
-	// r.DELETE("/product/:id", DeleteProduct())
-	// r.GET("/products", GetAllProducts())
+	r.POST("/product", handler.CreateProduct())
+	r.GET("/product/:id", handler.GetProduct())
+	r.PUT("/product/:id", handler.UpdateProduct())
+	r.DELETE("/product/:id", handler.DeleteProduct())
+	r.GET("/products", handler.GetAllProducts())
 
 	// r.POST("/product/stock", CreateProductStock())
-	// r.GET("/product/stock/:id", GetProductStock())
+	r.GET("/product/stock/:id", handler.GetProductStock())
 	// r.PUT("/product/stock/:id", UpdateProductStock())
 	// r.DELETE("/product/stock/:id", DeleteProductStock())
-	// r.GET("/product/stocks", GetAllProductStocks())
+	r.GET("/product/stocks", handler.GetAllProductStocks())
+
+	r.GET("/product/:name",handler.GetProductByName())
+	r.GET("/productbyprice/:price", handler.GetProductByPrice())
+	r.POST("/productbymulbrand", handler.GetProductByMulBrand())
+	r.POST("/productbycategory", handler.GetProductByCategory())
+	r.POST("/productbysupplier", handler.GetProductBySupplier())
+	r.POST("/productbyverifiedsupplier", handler.GetProductByVerifiedSupplier())
+
 }

@@ -32,45 +32,45 @@ type UserData struct {
 type Brands struct {
 	Id         primitive.ObjectID `json:"_id" bson:"_id"`
 	Name       string             `json:"name" bson:"name" gorm:"type:varchar(100)" validate:"min=2,max=100"`
-	Status_id  string             `json:"status_id" bson:"status_id" gorm:"type:varchar(100)" validate:"min=2,max=100"`
-	Created_at time.Time          `json:"created_at" bson:"created_at" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Status_id  bool               `json:"status_id" bson:"status_id"`
+	Created_at time.Time          `json:"created_at" bson:"created_at"`
 }
 
 type Catagories struct {
 	Id         primitive.ObjectID `json:"_id" bson:"_id"`
 	Name       string             `json:"name" bson:"name" gorm:"type:varchar(100)" validate:"min=2,max=100"`
-	Parent_id  primitive.ObjectID             `json:"parent_id" bson:"parent_id" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Parent_id  primitive.ObjectID `json:"parent_id" bson:"parent_id" gorm:"type:varchar(100)" validate:"min=2,max=100"`
 	Sequence   string             `json:"sequence" bson:"sequence" gorm:"type:varchar(100)" validate:"min=2,max=100"`
 	Status_id  bool               `json:"status_id" bson:"status_id" `
 	Created_at time.Time          `json:"created_at" bson:"created_at" `
 }
 
 type Suppliers struct {
-	Id                   primitive.ObjectID
-	Email                string
-	Phone                string
-	Status_id            string
-	Is_verified_supplier string
-	Created_at           time.Time
+	Id                   primitive.ObjectID `json:"_id" bson:"_id"`
+	Email                string             `json:"email" bson:"email" gorm:"unique;not null;type:varchar(100)" validate:"required,min=3,max=100"`
+	Phone                string             `json:"phone" bson:"phone" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Status_id            bool               `json:"status_id" bson:"status_id"`
+	Is_verified_supplier bool               `json:"is_verified_supplier" bson:"is_verified_supplier"`
+	Created_at           time.Time          `json:"created_at" bson:"created_at"`
 }
 
 type Products struct {
-	Id             primitive.ObjectID
-	Name           string
-	Description    string
-	Specifications string
-	Brand_id       string
-	Catagory_id    string
-	Supplier_id    string
-	Unit_price     string
-	Discount_price string
-	Tags           string
-	Status_id      string
+	Id             primitive.ObjectID `json:"_id" bson:"_id"`
+	Name           string             `json:"name" bson:"name" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Description    string             `json:"description" bson:"description" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Specifications string             `json:"specifications" bson:"specifications" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Brand_id       primitive.ObjectID `json:"brand_id" bson:"brand_id"`
+	Catagory_id    primitive.ObjectID `json:"catagory_id" bson:"catagory_id" `
+	Supplier_id    primitive.ObjectID `json:"supplier_id" bson:"supplier_id"`
+	Unit_price     int                `json:"unit_price" bson:"unit_price" `
+	Discount_price int                `json:"discount_price" bson:"discount_price"`
+	Tags           []string           `json:"tags" bson:"tags"`
+	Status_id      bool               `json:"status_id" bson:"status_id"`
 }
 
 type Product_Stocks struct {
-	Id             primitive.ObjectID
-	Product_id     string
-	Stock_quantity string
-	Updated_at     time.Time
+	Id             primitive.ObjectID `json:"_id" bson:"_id"`
+	Product_id     primitive.ObjectID `json:"product_id" bson:"product_id"`
+	Stock_quantity string             `json:"stock_quantity" bson:"stock_quantity" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Updated_at     time.Time          `json:"updated_at" bson:"updated_at"`
 }

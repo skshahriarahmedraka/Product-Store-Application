@@ -3,7 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	// "time"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	mongodatabase "github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
@@ -11,21 +11,21 @@ import (
 )
 
 
-func CreateProduct() gin.HandlerFunc{
+func CreateBrand() gin.HandlerFunc{
 	return func(c *gin.Context){
 
-		var reqProduct mongodatabase.Products 
-		err := c.BindJSON(&reqProduct)
+		var reqBrand mongodatabase.Brands 
+		err := c.BindJSON(&reqBrand)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		fmt.Println("🚀", reqProduct)
+		fmt.Println("🚀", reqBrand)
 
-		reqProduct.Id =primitive.NewObjectID()
-		// reqProduct.Created_at =time.Now().UTC()
-		count,err := mongodatabase.CountBrand(reqProduct.Name)
+		reqBrand.Id =primitive.NewObjectID()
+		reqBrand.Created_at =time.Now().UTC()
+		count,err := mongodatabase.CountBrand(reqBrand.Name)
 
 		// SEARCH EMAIL
 		if err != nil {
@@ -34,14 +34,14 @@ func CreateProduct() gin.HandlerFunc{
 			return
 		}
 		if count > 0 {
-			logger.Error().Msg("❌🔥 Error message :" + "already created product")
-			c.JSON(http.StatusBadRequest, gin.H{"error": "User already created product"})
+			logger.Error().Msg("❌🔥 Error message :" + "already registered Brand")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "User already registered brand"})
 			return
 		}
 
-		res,err:=mongodatabase.InsertProduct(reqProduct)
+		res,err:=mongodatabase.InsertBrand(reqBrand)
 		if err == nil {
-			logger.Info().Msg("📢 Info message :" + "successfully created Product")
+			logger.Info().Msg("📢 Info message :" + "successfully registered Brand")
 		}
 		_ = res
         fmt.Println("🚀 ~ file: category.go ~ line 46 ~ returnfunc ~ res : ", res)
@@ -50,59 +50,59 @@ func CreateProduct() gin.HandlerFunc{
 }
 
 
-func GetAllProducts() gin.HandlerFunc{
+func GetAllBrands() gin.HandlerFunc{
 	return func(c *gin.Context){
-		product,err := mongodatabase.GetAllProduct()
+		brands,err := mongodatabase.GetAllBrand()
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, product)
+		c.JSON(http.StatusOK, brands)
 	}
 }
-func GetProduct() gin.HandlerFunc{
+func GetBrand() gin.HandlerFunc{
 	
 	return func(c *gin.Context){
 		objectID, _ := primitive.ObjectIDFromHex(c.Param("id"))
-		product,err := mongodatabase.GetProduct(objectID)
+		brand,err := mongodatabase.GetBrand(objectID)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK,product)
+		c.JSON(http.StatusOK,brand)
 	}
 }
 
-func UpdateProduct() gin.HandlerFunc{
+func UpdateBrand() gin.HandlerFunc{
 	return func(c *gin.Context){
-		var reqProduct mongodatabase.Products 
+		var reqBrand mongodatabase.Brands 
 		objectID, _ := primitive.ObjectIDFromHex(c.Param("id"))
-		err := c.BindJSON(&reqProduct)
+		err := c.BindJSON(&reqBrand)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		// reqBrand.Created_at =time.Now().UTC()
+		reqBrand.Created_at =time.Now().UTC()
 
-		product,err := mongodatabase.UpdateProduct(objectID,reqProduct)
+		brand,err := mongodatabase.UpdateBrand(objectID,reqBrand)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK,product)
+		c.JSON(http.StatusOK,brand)
 	}
 }
 
 
-func DeleteProduct() gin.HandlerFunc {
+func DeleteBrand() gin.HandlerFunc {
 	return func(c *gin.Context){
 		
 		objectID, _ := primitive.ObjectIDFromHex(c.Param("id"))
-		res,err := mongodatabase.DeleteProduct(objectID)
+		res,err := mongodatabase.DeleteBrand(objectID)
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

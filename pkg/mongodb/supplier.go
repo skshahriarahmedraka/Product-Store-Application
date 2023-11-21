@@ -17,6 +17,13 @@ func CountSupplier(email string) (int64, error ){
 	return count,err
 }
 
+func CountSupplierById(id primitive.ObjectID) (int64, error ){
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
+	defer cancel()
+	count, err := MongoCollection.SupplierCol.CountDocuments(ctx, bson.M{"_id": id})
+	return count,err
+}
+
 
 func InsertSupplier(supplier Suppliers)( *mongo.InsertOneResult,error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
@@ -59,7 +66,7 @@ func GetSupplier(id primitive.ObjectID) (Suppliers, error) {
 }
 
 func UpdateSupplier(id primitive.ObjectID,supplier Suppliers) (*mongo.UpdateResult,error){
-	prev,err:= GetBrand(id)
+	prev,err:= GetSupplier(id)
 	if err != nil {
 		logger.Error().Msg("❌🔥 Error message :" + err.Error())
 		return nil,err

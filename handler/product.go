@@ -25,23 +25,78 @@ func CreateProduct() gin.HandlerFunc{
 
 		reqProduct.Id =primitive.NewObjectID()
 		// reqProduct.Created_at =time.Now().UTC()
-		count,err := mongodatabase.CountBrand(reqProduct.Name)
+		count,err := mongodatabase.CountBrandById(reqProduct.Brand_id)
 
-		// SEARCH EMAIL
+		
+		if err != nil {
+			logger.Error().Msg("❌🔥 Error message :" + err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		if count <= 0 {
+			logger.Error().Msg("❌🔥 Error message :" + "Brand Doesn't exist")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Brand Doesn't exist"})
+			return
+		}
+
+		count,err = mongodatabase.CountCategoryById(reqProduct.Catagory_id)
+
+		
+		if err != nil {
+			logger.Error().Msg("❌🔥 Error message :" + err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		if count <= 0 {
+			logger.Error().Msg("❌🔥 Error message :" + "Category Doesn't exist")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Category Doesn't exist"})
+			return
+		}
+
+
+		count,err = mongodatabase.CountSupplierById(reqProduct.Supplier_id)
+
+	
+		if err != nil {
+			logger.Error().Msg("❌🔥 Error message :" + err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		if count <= 0 {
+			logger.Error().Msg("❌🔥 Error message :" + "supplier Doesn't exist")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "supplier Doesn't exist"})
+			return
+		}
+
+
+		count,err = mongodatabase.DublicateBySupplier(reqProduct.Name, reqProduct.Supplier_id)
+
+		
 		if err != nil {
 			logger.Error().Msg("❌🔥 Error message :" + err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		if count > 0 {
-			logger.Error().Msg("❌🔥 Error message :" + "already created product")
-			c.JSON(http.StatusBadRequest, gin.H{"error": "User already created product"})
+			logger.Error().Msg("❌🔥 Error message :" + "Product already exist in this supplier")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Product already exist in this supplier"})
 			return
 		}
 
-		res,err:=mongodatabase.InsertProduct(reqProduct)
-		if err == nil {
-			logger.Info().Msg("📢 Info message :" + "successfully created Product")
+		res,err:=mongodatabase.AddProductInStock(reqProduct.Id)
+		_=res
+		if err != nil {
+			logger.Error().Msg("❌🔥 Error message :" + err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+
+		res,err =mongodatabase.InsertProduct(reqProduct)
+		if err != nil {
+			logger.Error().Msg("❌🔥 Error message :" + err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
 		}
 		_ = res
         fmt.Println("🚀 ~ file: category.go ~ line 46 ~ returnfunc ~ res : ", res)

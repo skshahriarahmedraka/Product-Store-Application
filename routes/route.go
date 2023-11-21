@@ -54,11 +54,11 @@ func Routes(r *gin.Engine) {
 	// r.DELETE("/product/stock/:id", DeleteProductStock())
 	r.GET("/product/stocks", handler.GetAllProductStocks())
 
-	r.GET("/product/:name",handler.GetProductByName())
+	r.POST("/productbyname",handler.GetProductByName())
 	r.GET("/productbyprice/:price", handler.GetProductByPrice())
 	r.POST("/productbymulbrand", handler.GetProductByMulBrand())
-	r.POST("/productbycategory", handler.GetProductByCategory())
-	r.POST("/productbysupplier", handler.GetProductBySupplier())
-	r.POST("/productbyverifiedsupplier", handler.GetProductByVerifiedSupplier())
+	r.GET("/productbycategory/:id", handler.GetProductByCategory())
+	r.GET("/productbysupplier/:id", handler.GetProductBySupplier())
+	r.GET("/productbyverifiedsupplier/:id", handler.GetProductByVerifiedSupplier())
 
 }

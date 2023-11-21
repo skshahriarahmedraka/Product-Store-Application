@@ -6,13 +6,23 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/skshahriarahmedraka/Product-Store-Application/pkg/mongodb"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	// "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 
 func GetProductByName() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		name := c.Param("name")
-		product, err := mongodatabase.GetProductByName(name)
+		
+		var req struct {
+			Name string `json:"name"`
+		}
+		err := c.BindJSON(&req)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		product, err := mongodatabase.GetProductByName(req.Name)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -36,12 +46,12 @@ func GetProductByPrice() gin.HandlerFunc {
 
 func GetProductByMulBrand() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var product mongodatabase.Products
-		if err := c.ShouldBindJSON(&product); err != nil {
+		var brandlist mongodatabase.Brand_List
+		if err := c.BindJSON(&brandlist); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		products, err := product.GetProductByMulBrand(product.Brand)
+		products, err := mongodatabase.GetProductByMulBrand(brandlist)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -52,12 +62,10 @@ func GetProductByMulBrand() gin.HandlerFunc {
 
 func GetProductByCategory() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var product mongodatabase.Products
-		if err := c.ShouldBindJSON(&product); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		products, err := product.GetProductByCategory(product.Category)
+		var categoryid primitive.ObjectID
+		id:= c.Param("id")
+		categoryid, _ = primitive.ObjectIDFromHex(id)
+		products, err := mongodatabase.GetProductByCategory(categoryid)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -68,12 +76,10 @@ func GetProductByCategory() gin.HandlerFunc {
 
 func GetProductBySupplier() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var product mongodatabase.Products
-		if err := c.ShouldBindJSON(&product); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		products, err := product.GetProductBySupplier(product.Supplier)
+		var supplierid primitive.ObjectID
+		id:= c.Param("id")
+		supplierid, _ = primitive.ObjectIDFromHex(id)
+		products, err := mongodatabase.GetProductBySupplier(supplierid)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -84,12 +90,10 @@ func GetProductBySupplier() gin.HandlerFunc {
 
 func GetProductByVerifiedSupplier()gin.HandlerFunc{
 	return func(c *gin.Context) {
-		var product mongodatabase.Products
-		if err := c.ShouldBindJSON(&product); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		products, err := product.GetProductByVerifiedSupplier(product.Supplier)
+		var supplierid primitive.ObjectID
+		id:= c.Param("id")
+		supplierid, _ = primitive.ObjectIDFromHex(id)
+		products, err := mongodatabase.GetProductByVerifiedSupplier(supplierid)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return

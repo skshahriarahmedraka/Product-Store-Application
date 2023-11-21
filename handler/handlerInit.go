@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog"
-	"go.mongodb.org/mongo-driver/mongo"
+	
 )
 
 var buildInfo *debug.BuildInfo
@@ -36,7 +36,3 @@ func init() {
 }
 
 var Validator = validator.New()
-
-type DatabaseCollections struct {
-	Mongo *mongo.Database
-}

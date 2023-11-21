@@ -16,6 +16,12 @@ func CountBrand(name string) (int64, error ){
 	count, err := MongoCollection.BrandCol.CountDocuments(ctx, bson.M{"name": name})
 	return count,err
 }
+func CountBrandById(id primitive.ObjectID) (int64, error ){
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
+	defer cancel()
+	count, err := MongoCollection.BrandCol.CountDocuments(ctx, bson.M{"_id": id})
+	return count,err
+}
 
 
 func InsertBrand(brand Brands)( *mongo.InsertOneResult,error) {

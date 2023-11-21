@@ -71,6 +71,13 @@ type Products struct {
 type Product_Stocks struct {
 	Id             primitive.ObjectID `json:"_id" bson:"_id"`
 	Product_id     primitive.ObjectID `json:"product_id" bson:"product_id"`
-	Stock_quantity string             `json:"stock_quantity" bson:"stock_quantity" gorm:"type:varchar(100)" validate:"min=2,max=100"`
+	Stock_quantity int             `json:"stock_quantity" bson:"stock_quantity" `
 	Updated_at     time.Time          `json:"updated_at" bson:"updated_at"`
+}
+
+type Brand_List struct {
+	Brand_id []primitive.ObjectID `json:"brand_id" bson:"brand_id"`
+}
+type Category_List struct {
+	Category_id []primitive.ObjectID `json:"category_id" bson:"category_id"`
 }
